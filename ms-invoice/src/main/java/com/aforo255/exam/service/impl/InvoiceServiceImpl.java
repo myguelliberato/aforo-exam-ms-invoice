@@ -44,7 +44,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if (optional.isPresent()) {
 			return optional.get();
 		}
-		return null;
+		 throw new RuntimeException("La Factura no se encuentra registrado");
 	}
 
 }
