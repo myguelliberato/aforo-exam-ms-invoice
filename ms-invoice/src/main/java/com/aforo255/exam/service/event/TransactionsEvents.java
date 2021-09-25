@@ -20,14 +20,21 @@ public class TransactionsEvents {
 	private InvoiceService invoiceService;
 	@Autowired
 	private ObjectMapper objectMapper;
-
+	/**
+	 * 1: Pendiente de Pago
+	 * 2: Pagado
+	 * @param consumerRecord
+	 * @throws JsonMappingException
+	 * @throws JsonProcessingException
+	 */
 	public void processTransactionEvent(ConsumerRecord<Integer, String> consumerRecord) throws JsonMappingException, JsonProcessingException {
 		log.info(":::::processTransactionEvent:::::");
 		try {
 			Invoice account = new Invoice();
 			Invoice event = objectMapper.readValue(consumerRecord.value(), Invoice.class);
 			account = invoiceService.findById(event.getInvoiceId());
-			account.setAmount(event.getAmount());
+//			account.setAmount(event.getAmount());
+			// Solo modificamos el estado
 			account.setState(2);
 			invoiceService.save(account);
 		} catch (Exception e) {
